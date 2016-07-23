@@ -1,0 +1,181 @@
+// 变量
+//------------------
+
+//== css目录
+$base-css-url = '//static.wuage.com/trade/pages/order-list/css/';
+
+//== iconfont目录
+$base-iconfont-url = '//static.wuage.com/common/icon-font/';
+
+//== 基础颜色
+$base-color = #027CFF;
+$base-color-darker = #005ee4;
+$base-font-color = #333;
+$light-font-color = #666;
+$base-border-color = #ced7e1;
+
+//== 排版
+$base-font-size = 14px;
+$base-font-family = "Microsoft YaHei", "微软雅黑";
+$base-size-h = $base-font-size;
+
+//== 添加前缀
+f-prefix(prop, args) {
+  -moz-{prop} args
+  -webkit-{prop} args
+  -ms-{prop} args
+  {prop} args
+}
+
+f-border-radius() {
+  f-prefix('border-radius', arguments)
+}
+
+f-box-shadow() {
+  f-prefix('box-shadow', arguments)
+}
+
+f-box-sizing() {
+  f-prefix('box-sizing', arguments)
+}
+
+//== 通用函数
+f-border-f(color = $base-border-color) {
+  border 1px solid color
+}
+
+f-border-t(color = $base-border-color) {
+  border-left 1px solid color
+}
+
+f-border-r(color = $base-border-color) {
+  border-left 1px solid color
+}
+
+f-border-b(color = $base-border-color) {
+  border-left 1px solid color
+}
+
+f-border-l(color = $base-border-color) {
+  border-left 1px solid color
+}
+
+f-float-l() {
+  float left
+}
+
+f-float-r() {
+  float right
+}
+
+f-float-c() {
+  clear: both
+}
+
+f-txt-c() {
+  text-align center
+}
+
+f-txt-l() {
+  text-align left
+}
+
+f-txt-r() {
+  text-align right
+}
+
+f-font-size(size = $base-font-size) {
+  font-size: size
+}
+
+//== css重新设置
+html, body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, li, pre, fieldset, legend, button, input, textarea, form, th, td {
+  margin: 0;
+  padding: 0;
+  f-box-sizing(border-box);
+  font-family $base-font-family;
+  color: $base-font-color;
+}
+
+ul, ol {
+  list-style none
+  margin 0
+  padding 0
+}
+
+a,a:visited {
+  text-decoration: none
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: $base-size-h;
+  font-weight: normal;
+}
+
+//== 公共组件
+
+//= 清除浮动
+.clearfix:after {
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+//= 透明度
+f-opacity(val){
+  opacity: val;
+  filter: alpha(opacity=val*100);
+}
+
+
+//= 文字不换行
+.nowrap {
+  //text-overflow用来设置是否使用一个省略标记（...）标示对象内文本的溢出。
+  //但是text-overflow只是用来说明文字溢出时用什么方式显示,
+  //要实现溢出时产生省略号的效果，
+  //还须定义强制文本在一行内显示（white-space:nowrap）及溢出内容为隐藏（overflow:hidden），
+  //只有这样才能实现溢出文本显示省略号的效果
+  //ellipsis 省略,clip 剪切
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+//= 按钮组件
+.btn {
+  display inline-block
+  margin-bottom: 0;
+  white-space: nowrap;
+  vertical-align: middle;
+  line-height: 2;
+  padding 6px 20px
+  background transparent
+  cursor: pointer;
+  outline: none;
+  color $base-color
+  font-size $base-font-size
+  f-border-f($base-color);
+  f-border-radius(3px)
+}
+
+.btn:hover {
+  background-color $base-color
+  color #fff
+}
+
+.btn.btn-primary {
+  background-color $base-color
+  color #fff
+}
+
+.btn.btn-primary:hover {
+  background-color $base-color-darker
+}
+
+.btn.btn-disabled {
+  background-color #e8e8e8;
+  color #fff;
+  border none;
+}

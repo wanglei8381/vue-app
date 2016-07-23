@@ -1,0 +1,36 @@
+@import "flex.styl"
+@import "reset.styl"
+
+* {
+  margin: 0;
+}
+
+.m-header {
+  position: fixed;
+  top 0
+  left: 0;
+  height: 50px
+  width 100%;
+  background-color: #E8E8E8;
+  font-size 20px
+  border-bottom 1px solid #ddd
+  uf();
+  uf-justify-content();
+  uf-align-items();
+}
+
+.m-body {
+  margin-top 50px
+}
+
+.actions {
+
+  li {
+    uf();
+    padding 10px 15px
+    border-bottom 1px solid #ddd
+    .title{
+      uf-flex(1)
+    }
+  }
+}

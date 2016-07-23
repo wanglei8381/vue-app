@@ -1,0 +1,10 @@
+<header-cpt></header-cpt>
+<section class="m-body">
+    <ul class="actions">
+        <li v-for="item in list" @click="goto(item.link)">
+            <span class="title">{{item.title}}</span>
+            <span class="arrow">&gt;</span>
+        </li>
+    </ul>
+</section>
+<pullupdown-cpt :up="true" :down="true"></pullupdown-cpt>

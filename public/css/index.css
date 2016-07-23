@@ -1,0 +1,241 @@
+.uf {
+/* 伸缩盒子 */
+  display: flex;
+  display: -webkit-flex;
+}
+.uf-rev {
+/*
+    row（默认值）：主轴为水平方向，起点在左端。
+    row-reverse：主轴为水平方向，起点在右端。
+    column：主轴为垂直方向，起点在上沿。
+    column-reverse：主轴为垂直方向，起点在下沿
+  */
+  flex-direction: column;
+  -webkit-flex-direction: column;
+}
+.uf-wrap {
+/*
+      默认情况下，项目都排在一条线（又称"轴线"）上。flex-wrap属性定义，如果一条轴线排不下，如何换行。
+      nowrap(默认,不换行)
+      wrap(换行)
+      wrap-reverse(反转换行)
+  */
+  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+}
+.uf-g1 {
+/*属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大*/
+  flex-grow: 1;
+  -webkit-flex-grow: 1;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  width: 1%;
+}
+.uf-g2 {
+/*属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大*/
+  flex-grow: 2;
+  -webkit-flex-grow: 2;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  width: 2%;
+}
+.uf-g3 {
+/*属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大*/
+  flex-grow: 3;
+  -webkit-flex-grow: 3;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  width: 3%;
+}
+.uf-g4 {
+/*属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大*/
+  flex-grow: 4;
+  -webkit-flex-grow: 4;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  width: 4%;
+}
+.uf-f1 {
+/*flex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。*/
+  flex: 1;
+  -webkit-flex: 1;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  width: 1%;
+}
+.uf-f2 {
+/*flex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。*/
+  flex: 2;
+  -webkit-flex: 2;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  width: 2%;
+}
+.uf-f3 {
+/*flex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。*/
+  flex: 3;
+  -webkit-flex: 3;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  width: 3%;
+}
+.uf-f4 {
+/*flex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。*/
+  flex: 4;
+  -webkit-flex: 4;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  width: 4%;
+}
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+blockquote,
+dl,
+dt,
+dd,
+ul,
+li,
+pre,
+fieldset,
+legend,
+button,
+input,
+textarea,
+form,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: "Microsoft YaHei", "微软雅黑";
+  color: #333;
+}
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+a,
+a:visited {
+  text-decoration: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 14px;
+  font-weight: normal;
+}
+.clearfix:after {
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.nowrap {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.btn {
+  display: inline-block;
+  margin-bottom: 0;
+  white-space: nowrap;
+  vertical-align: middle;
+  line-height: 2;
+  padding: 6px 20px;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  color: #027cff;
+  font-size: 14px;
+  border: 1px solid #027cff;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+}
+.btn:hover {
+  background-color: #027cff;
+  color: #fff;
+}
+.btn.btn-primary {
+  background-color: #027cff;
+  color: #fff;
+}
+.btn.btn-primary:hover {
+  background-color: #005ee4;
+}
+.btn.btn-disabled {
+  background-color: #e8e8e8;
+  color: #fff;
+  border: none;
+}
+* {
+  margin: 0;
+}
+.m-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 100%;
+  background-color: #e8e8e8;
+  font-size: 20px;
+  border-bottom: 1px solid #ddd;
+/* 伸缩盒子 */
+  display: flex;
+  display: -webkit-flex;
+/*
+    justify-content属性定义了项目在主轴上(X)的对齐方式。
+    flex-start 默认值
+    flex-end
+    center
+    space-between 两端对齐，项目之间的间隔都相等
+    space-around 每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍。
+   */
+  justify-content: center;
+  -webkit-justify-content: center;
+/*
+    align-items属性定义项目在交叉轴上如何对齐
+    flex-start
+    flex-end
+    center
+    baseline 项目的第一行文字的基线对齐
+    stretch (默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度
+  */
+  align-items: center;
+  -webkit-align-items: center;
+}
+.m-body {
+  margin-top: 50px;
+}
+.actions li {
+/* 伸缩盒子 */
+  display: flex;
+  display: -webkit-flex;
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd;
+}
+.actions li .title {
+/*flex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。*/
+  flex: 1;
+  -webkit-flex: 1;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}

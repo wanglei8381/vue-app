@@ -1,0 +1,10 @@
+<div id="__pull_up_down_container">
+    <!--下拉刷新-->
+    <div class="m-rotate-wrapper" :class="{'waiting':isWaiting,'close':isClose}" id="__rotate__wrapper"
+         v-bind:style="style.rotateWrapper">
+        <canvas id="__rotate__canvas" height="50" width="50" v-bind:style="style.rotateWrapper">
+        </canvas>
+    </div>
+    <!--上拉加载-->
+    <div id="__loading" class="m-loading-wrapper" :class="{'open':loadingOpen}"><i class="iconfont iconfont-loading">&#xe609;</i> {{{loadingMsg}}}</div>
+</div>
