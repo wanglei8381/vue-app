@@ -45,6 +45,7 @@ var pullUpDown = {
         if (_top) {
             e.preventDefault();
             deltaY = touch.y2 - touch.y1;
+            if (deltaY < 0) return;
             //deltaY = deltaY < 0 ? 0 : deltaY;
             // var distinct = Math.log(deltaY) * 10;
             var distinct = deltaY / 5;

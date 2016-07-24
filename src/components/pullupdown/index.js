@@ -5,7 +5,7 @@ let pullUpDown = require('./pullupdown.js');
 
 module.exports = {
     template: require('./template.html'),
-    data: ()=>({
+    data: ()=>({    
         config: {//canvas配置
             color: '#ff0000',
             lineWidth: 3,
@@ -18,6 +18,9 @@ module.exports = {
         style: {//内联样式
             rotateWrapper: {},
             rotateCanvas: {}
+        },
+        doms: {//dom节点
+
         },
         isWaiting: false,//下拉刷新等待状态
         isClose: false,//下拉刷新关闭状态
@@ -83,8 +86,7 @@ module.exports = {
             pullUpDown.pause('bottom');
             this.loadingOpen = true;
             document.body.scrollTop = document.body.scrollTop + 100;
-            //todo 调用接口
-            this.$dispatch('bottom');
+            this.$dispatch('pull-to-refresh', 2);
         },
         closeBottom: function () {
             this.loadingOpen = false;
@@ -94,19 +96,19 @@ module.exports = {
             if (distinct > 95) return;
             this.isWaiting = false;
             this.isClose = false;
-            this.style.rotateWrapper.top = distinct + 'px';
-            this.style.rotateCanvas.transform = 'rotate(' + distinct * 3 + 'deg)';
+            this.doms.rotateWrapper.style.top = distinct + 'px';
+            this.doms.rotateCanvas.style.transform = 'rotate(' + distinct * 3 + 'deg)';
             this.drawArrowCircle(distinct / 30);
         },
         handleUpEnd: function (distinct) {
-            this.style.rotateWrapper = {};
+            this.doms.rotateWrapper.removeAttribute('style');
             if (distinct >= 50) {
                 pullUpDown.pause('move').pause('end');
                 //调用动画
                 window.requestAnimationFrame(this.drawCircle());
                 this.isWaiting = true;
                 this.isClose = false;
-                this.$dispatch('up');
+                this.$dispatch('pull-to-refresh', 1);
             } else {
                 this.isWaiting = false;
                 this.isClose = true;
@@ -115,26 +117,30 @@ module.exports = {
         closeUp: function () {
             this.isWaiting = false;
             this.isClose = true;
+            pullUpDown.resume('move').resume('end');
             //todo测试动画能否关闭
             window.cancelAnimationFrame(this.count);
         }
     },
     events: {
-        'closeBottom': function () {
-            this.closeBottom();
-        },
-        'closeUp': function () {
-            this.closeUp();
+        'pull-to-refresh-close': function (t) {
+            if (t == 1) {
+                this.closeUp();
+            } else if (t == 2) {
+                this.closeBottom();
+            }
         }
     },
     ready: function () {
+        this.doms.rotateWrapper = this.$el.querySelector('#__rotate__wrapper');
+        this.doms.rotateCanvas = this.$el.querySelector('#__rotate__canvas');
         if (this.up) {
             pullUpDown.on('bottom', () => {
                 this.handleBottom();
             });
         }
         if (this.down) {
-            let cxt = this.$el.querySelector('#__rotate__canvas').getContext('2d');
+            let cxt = this.doms.rotateCanvas.getContext('2d');
             cxt.strokeStyle = this.config.color;
             cxt.fillStyle = this.config.color;
             cxt.lineWidth = this.config.lineWidth;

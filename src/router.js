@@ -12,6 +12,11 @@ router.map({
             require(['./views/home'], resolve);
         }
     },
+    '/pullupdown': {
+        component: function (resolve) {
+            require(['./views/pull-to-fresh'], resolve);
+        }
+    },
     '*action': {
         component: function (resolve) {
             require(['./views/home'], resolve);
