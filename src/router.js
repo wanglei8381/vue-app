@@ -17,6 +17,21 @@ router.map({
             require(['./views/pull-to-fresh'], resolve);
         }
     },
+    '/navbar': {
+        component: function (resolve) {
+            require(['./views/nav-bar'], resolve);
+        }
+    },
+    '/actionsheet': {
+        component: function (resolve) {
+            require(['./views/actionsheet'], resolve);
+        }
+    },
+    '/picker': {
+        component: function (resolve) {
+            require(['./views/picker'], resolve);
+        }
+    },
     '*action': {
         component: function (resolve) {
             require(['./views/home'], resolve);

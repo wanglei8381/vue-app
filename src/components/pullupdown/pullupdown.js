@@ -43,9 +43,9 @@ var pullUpDown = {
         touch.x2 = firstTouch.pageX;
         touch.y2 = firstTouch.pageY;
         if (_top) {
-            e.preventDefault();
             deltaY = touch.y2 - touch.y1;
             if (deltaY < 0) return;
+            e.preventDefault();
             //deltaY = deltaY < 0 ? 0 : deltaY;
             // var distinct = Math.log(deltaY) * 10;
             var distinct = deltaY / 5;

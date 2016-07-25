@@ -1,5 +1,6 @@
 @import "flex.styl"
 @import "reset.styl"
+@import "iconfont.styl"
 
 * {
   margin: 0;
@@ -15,12 +16,38 @@
   font-size 20px
   border-bottom 1px solid #ddd
   uf();
-  uf-justify-content();
-  uf-align-items();
+  .header-side {
+    padding: 0 20px;
+    height: 100%;
+    display: flex;
+    uf();
+    uf-align-items();
+  }
+  .header-title {
+    uf();
+    uf-align-items();
+    uf-justify-content();
+  }
 }
 
 .m-body {
   margin-top 50px
+
+  //导航
+  &.m-body-navbar {
+    font-size: 20px;
+    padding-left 50px
+    margin-top 100px;
+    h1 {
+      font-size 23px
+    }
+    ul {
+      margin-top 15px
+    }
+    li {
+      margin-top 10px
+    }
+  }
 }
 
 .actions {
@@ -29,7 +56,7 @@
     uf();
     padding 10px 15px
     border-bottom 1px solid #ddd
-    .title{
+    .title {
       uf-flex(1)
     }
   }

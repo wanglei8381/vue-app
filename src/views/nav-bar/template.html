@@ -1,0 +1,15 @@
+<header-cpt :left-cnt="leftNavbarCnt" title="nav-bar(导航)" :right-cnt="rightNavbarCnt"></header-cpt>
+<section class="m-body m-body-navbar">
+    <ul>
+        <li><h1>左侧导航</h1></li>
+        <li><label><input v-model="left" value="0" type="radio" name="left">不显示</label></li>
+        <li><label><input v-model="left" value="1" type="radio" name="left">显示</label></li>
+        <li><label><input v-model="left" value="2" type="radio" name="left">显加文字</label></li>
+    </ul>
+    <ul>
+        <li><h1>右侧导航</h1></li>
+        <li><label><input v-model="right" value="0" type="radio" name="right">不显示</label></li>
+        <li><label><input v-model="right" value="1" type="radio" name="right">显示</label></li>
+        <li><label><input v-model="right" value="2" type="radio" name="right">文字</label></li>
+    </ul>
+</section>

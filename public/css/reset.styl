@@ -97,13 +97,20 @@ html, body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, li, pre, 
   color: $base-font-color;
 }
 
+html, body {
+  height: 100%
+  width 100%
+  uf()
+  uf-dir();
+}
+
 ul, ol {
   list-style none
   margin 0
   padding 0
 }
 
-a,a:visited {
+a, a:visited {
   text-decoration: none
 }
 
@@ -124,11 +131,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 //= 透明度
-f-opacity(val){
+f-opacity(val) {
   opacity: val;
-  filter: alpha(opacity=val*100);
+  filter: alpha(opacity = val * 100);
 }
-
 
 //= 文字不换行
 .nowrap {

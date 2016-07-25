@@ -1,0 +1,69 @@
+//actionsheet样式
+.m-actionsheet-box, .m-shade-layer {
+  position: fixed;
+  top 0;
+  left: 0;
+  width 100%
+  height: 100%
+}
+
+.m-shade-layer {
+  z-index 0
+  background-color rgba(0, 0, 0, 0.1)
+  opacity: 0;
+  &.m-shade-layer-fade {
+    transition opacity 0.3s
+    opacity: 1;
+  }
+}
+
+//actionsheet样式
+.m-actionsheet-box {
+  position: fixed;
+  z-index: 19940501
+  top 0;
+  left: 0;
+  width 100%
+  height: 100%
+  .m-actionsheet-body {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    bottom: -170px
+    width 100%
+    //动画
+    //transform:scaleY(0.1);
+    transition bottom 0.3s
+    &.m-actionsheet-body-fade {
+      transition all 0.3s
+      //transform:scaleY(1);
+      bottom: 10px
+    }
+    .m-actionsheet-cnt {
+      padding-left 10px
+      padding-right: 10px;
+      ul {
+        list-style: none;
+        li {
+          color #027CFF
+          background-color: #fff
+          text-align center
+          padding: 10px 0;
+          border-top 1px solid #ddd
+          &:first-child {
+            border-top none
+            border-radius 5px 5px 0 0;
+          }
+          &:nth-last-child(2) {
+            border-radius 0 0 5px 5px;
+          }
+          &:last-child {
+            margin-top 10px
+            border-radius 5px
+            font-weight: 700;
+          }
+        }
+      }
+    }
+  }
+}

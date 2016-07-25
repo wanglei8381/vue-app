@@ -5,7 +5,7 @@ module.exports = {
     template: require('./template.html'),
     data: ()=>({    
         config: {//canvas配置
-            color: '#ff0000',
+            color: '#027CFF',
             lineWidth: 3,
             canvasHeight: 50,
             canvasWidth: 50
@@ -67,11 +67,11 @@ module.exports = {
                 cxt.arc(25, 25, 15, k * Math.PI, j * Math.PI, false);
                 cxt.stroke();
                 if (a % 2) {
-                    j = j + 0.06;
-                    k = k + 0.03;
+                    j = j + 0.09;
+                    k = k + 0.01;
                 } else {
-                    j = j + 0.03;
-                    k = k + 0.06;
+                    j = j + 0.01;
+                    k = k + 0.09;
                 }
                 if (Math.abs(j - k) >= 2) {
                     a++;
@@ -116,7 +116,6 @@ module.exports = {
             this.isWaiting = false;
             this.isClose = true;
             pullUpDown.resume('move').resume('end');
-            //todo测试动画能否关闭
             window.cancelAnimationFrame(this.count);
         }
     },

@@ -1,0 +1,13 @@
+<div class="m-actionsheet-box" v-show="open">
+    <div @click='close' class="m-shade-layer" :class="{'m-shade-layer-fade': fade}"></div>
+    <div class="m-actionsheet-body" :class="{'m-actionsheet-body-fade': fade}">
+        <div class="m-actionsheet-cnt">
+            <ul>
+                <li @click="choose(item,$index,$event)" v-for="item in list" data-value="{{item.value}}">
+                    {{item.label}}
+                </li>
+                <li @click="choose({value:'cancle',label:'取消'},'-1',$event)">取消</li>
+            </ul>
+        </div>
+    </div>
+</div>

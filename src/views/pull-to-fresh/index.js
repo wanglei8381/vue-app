@@ -24,6 +24,9 @@ module.exports = {
                     this.ajax();
                 }, 3000);
             }
-        }
+        },
+        'left-nav'(e){
+            this.$router.go('/');
+        },
     }
 };

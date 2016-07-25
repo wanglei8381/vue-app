@@ -7,8 +7,20 @@ var list = [
         link: '/pullupdown'
     },
     {
+        title: 'nav-bar(导航)',
+        link: '/navbar'
+    },
+    {
         title: 'dialog(消息框)',
         link: '/dialog'
+    },
+    {
+        title: 'picker(选择器)',
+        link: '/picker'
+    },
+    {
+        title: 'actionsheet',
+        link: '/actionsheet'
     }
 ];
 
@@ -19,7 +31,6 @@ module.exports = {
     },
     methods: {
         goto: function (link) {
-            console.log(link);
             this.$router.go(link);
         }
     }
