@@ -1,6 +1,4 @@
 require('./style.css');
-let up_template = require('./up.html');
-let down_template = require('./down.html');
 let pullUpDown = require('./pullupdown.js');
 
 module.exports = {
