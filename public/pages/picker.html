@@ -9,29 +9,54 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <base target="_blank">
     <title>vue-app</title>
-    <script type="text/javascript" charset="utf-8" async="" src="./dist/1.index.js"></script>
-    <style type="text/css">
-        .m-picker-box {
-            font-size: 20px;
-        }
-
-        li {
-            transform: rotateX(30deg) scaleZ(1.2)
+    <link rel="stylesheet" href="../css/index.css">
+    <style>
+        .btn {
+            display: inline-block;
+            padding: .375rem 1rem;
+            font-size: 1rem;
+            font-weight: normal;
+            line-height: 1.3;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            outline: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            border: 1px solid #027CFF;
+            color: #027CFF;
+            background: transparent;
+            border-radius: .25rem;
         }
     </style>
 </head>
 <body>
-<div class="m-picker-box">
-    <div class="m-shade-layer"></div>
-    <div class="m-picker-body">
-        <div class="m-picker-cnt">
-            <ul>
-                <li>拍照</li>
-                <li>图库中选择</li>
-                <li>取消</li>
-            </ul>
-        </div>
-    </div>
-</div>
+<canvas id="picker-canvas-box" height="300"></canvas>
+<!--<div class="m-picker-box">-->
+<!--<div class="m-shade-layer"></div>-->
+<!--<div class="m-picker-body">-->
+<!--<div class="m-picker-cnt">-->
+<!--<ul>-->
+<!--<li class="item1">拍照拍照拍照拍照拍照拍照</li>-->
+<!--<li class="item2">图库中选择</li>-->
+<!--<li class="item3">取消</li>-->
+<!--<li class="mid">中间值</li>-->
+<!--<li class="item5">拍照</li>-->
+<!--<li class="item6">图库中选择</li>-->
+<!--<li class="item7">取消取消取消取消取消取消</li>-->
+<!--</ul>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+<script>
+    var cxt = document.querySelector('picker-canvas-box').getContext('2d');
+    cxt.strokeStyle = 'red';
+    cxt.fillStyle = 'red';
+    cxt.get
+</script>
 </body>
 </html>

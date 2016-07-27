@@ -34,3 +34,23 @@
 
 </body>
 </html>
+
+
+<div class="m-dialog m-conform" @click="dialog($event)">
+    <div class="m-shade-layer"></div>
+    <div class="m-dialog-cnt">
+        <h1>确认订单</h1>
+        <span class="close" data-alias="cancle"></span>
+        <div class="m-body">
+            <p v-else>
+                <label><input type="checkbox" v-model="agree">是否确认编号为{{currentOrder.id}}的订单?</label>
+            </p>
+        </div>
+        <footer style="border: none;text-align: center;bottom: 20px;">
+            <button class="btn" data-alias="cancle">取消
+            </button>
+            <button class="btn btn-primary" data-alias="conform">确认
+            </button>
+        </footer>
+    </div>
+</div>
