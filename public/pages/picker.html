@@ -31,32 +31,48 @@
             background: transparent;
             border-radius: .25rem;
         }
+        #picker-canvas-box {
+            position: absolute;
+            bottom: 0;
+            z-index: 2;
+        }
     </style>
 </head>
 <body>
-<canvas id="picker-canvas-box" height="300"></canvas>
-<!--<div class="m-picker-box">-->
-<!--<div class="m-shade-layer"></div>-->
-<!--<div class="m-picker-body">-->
-<!--<div class="m-picker-cnt">-->
-<!--<ul>-->
-<!--<li class="item1">拍照拍照拍照拍照拍照拍照</li>-->
-<!--<li class="item2">图库中选择</li>-->
-<!--<li class="item3">取消</li>-->
-<!--<li class="mid">中间值</li>-->
-<!--<li class="item5">拍照</li>-->
-<!--<li class="item6">图库中选择</li>-->
-<!--<li class="item7">取消取消取消取消取消取消</li>-->
-<!--</ul>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
+<canvas id="picker-canvas-box" height="220"></canvas>
+<div class="m-picker-box">
+    <div class="m-shade-layer"></div>
+    <div class="m-picker-body">
+        <div class="m-picker-cnt">
+            <ul>
+                <li class="item1">拍照拍照拍照拍照拍照拍照</li>
+                <li class="item2">图库中选择</li>
+                <li class="item3">取消</li>
+                <li class="mid">中间值</li>
+                <li class="item5">拍照</li>
+                <li class="item6">图库中选择</li>
+                <li class="item7">取消取消取消取消取消取消</li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <script>
-    var cxt = document.querySelector('picker-canvas-box').getContext('2d');
-    cxt.strokeStyle = 'red';
-    cxt.fillStyle = 'red';
-    cxt.get
+    var pickerCanvas = document.querySelector('#picker-canvas-box');
+    pickerCanvas.width = window.innerWidth;
+    var style = getComputedStyle(pickerCanvas, '');
+    var width = parseInt(style.getPropertyValue('width'));
+    var height = parseInt(style.getPropertyValue('height'));
+    var ctx = pickerCanvas.getContext('2d');
+    ctx.strokeStyle = 'red';
+    ctx.fillStyle = 'red';
+    ctx.moveTo(width / 2, 0);
+    ctx.lineTo(width / 2, height);
+    ctx.moveTo(0, height / 2 - 17);
+    ctx.lineTo(width, height / 2 - 17);
+    ctx.moveTo(0, height / 2 + 17);
+    ctx.lineTo(width, height / 2 + 17);
+    ctx.stroke();
 </script>
 </body>
 </html>
