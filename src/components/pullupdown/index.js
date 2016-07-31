@@ -30,7 +30,7 @@ module.exports = {
             this.$router.go(link);
         },
         drawArrowCircle: function (i) {
-            if (i > 1.8) {
+            if (i > 1.7) {
                 return;
             }
             const cxt = this.cxt;
@@ -56,6 +56,27 @@ module.exports = {
             cxt.fill();
         },
         drawCircle: function () {
+            let k = 0;
+            const cxt = this.cxt;
+            const self = this;
+            return function __drawCircle() {
+                cxt.clearRect(0, 0, 50, 50);
+                // cxt.beginPath();
+                // cxt.strokeStyle = '#EEEEEE'
+                // cxt.arc(25, 25, 15, 0, 2 * Math.PI, false);
+                // cxt.stroke();
+                // cxt.closePath();
+
+                cxt.beginPath();
+                // cxt.strokeStyle = '#21DD44'
+                cxt.arc(25, 25, 15, k * Math.PI, (k + 1.5) * Math.PI, false);
+                cxt.stroke();
+                cxt.closePath();
+                k = k + 0.05;
+                self.count = window.requestAnimationFrame(__drawCircle);
+            };
+        },/*
+        drawCircle: function () {
             let j = 0;
             let k = 0;
             let a = 1;
@@ -79,7 +100,7 @@ module.exports = {
                 }
                 self.count = window.requestAnimationFrame(__drawCircle);
             };
-        },
+        },*/
         handleBottom: function () {
             pullUpDown.pause('bottom');
             this.loadingOpen = true;
