@@ -1,9 +1,11 @@
 require('./style.css');
-let pullUpDown = require('./pullupdown.js');
+// let pullUpDown = require('./pullupdown.js');
+let pullup = require('./pullup');
+let pulldown = require('./pulldown');
 
 module.exports = {
     template: require('./template.html'),
-    data: ()=>({    
+    data: ()=>({
         config: {//canvas配置
             color: '#027CFF',
             lineWidth: 3,
@@ -75,41 +77,41 @@ module.exports = {
                 k = k + 0.05;
                 self.count = window.requestAnimationFrame(__drawCircle);
             };
-        },/*
-        drawCircle: function () {
-            let j = 0;
-            let k = 0;
-            let a = 1;
-            const cxt = this.cxt;
-            const self = this;
-            return function __drawCircle() {
-                cxt.clearRect(0, 0, 50, 50);
-                cxt.beginPath();
-                cxt.arc(25, 25, 15, k * Math.PI, j * Math.PI, false);
-                cxt.stroke();
-                if (a % 2) {
-                    j = j + 0.09;
-                    k = k + 0.01;
-                } else {
-                    j = j + 0.01;
-                    k = k + 0.09;
-                }
-                if (Math.abs(j - k) >= 2) {
-                    a++;
-                    k = j %= 2;
-                }
-                self.count = window.requestAnimationFrame(__drawCircle);
-            };
-        },*/
+        }, /*
+         drawCircle: function () {
+         let j = 0;
+         let k = 0;
+         let a = 1;
+         const cxt = this.cxt;
+         const self = this;
+         return function __drawCircle() {
+         cxt.clearRect(0, 0, 50, 50);
+         cxt.beginPath();
+         cxt.arc(25, 25, 15, k * Math.PI, j * Math.PI, false);
+         cxt.stroke();
+         if (a % 2) {
+         j = j + 0.09;
+         k = k + 0.01;
+         } else {
+         j = j + 0.01;
+         k = k + 0.09;
+         }
+         if (Math.abs(j - k) >= 2) {
+         a++;
+         k = j %= 2;
+         }
+         self.count = window.requestAnimationFrame(__drawCircle);
+         };
+         },*/
         handleBottom: function () {
-            pullUpDown.pause('bottom');
+            pulldown.pause('bottom');
             this.loadingOpen = true;
             document.body.scrollTop = document.body.scrollTop + 100;
             this.$dispatch('pull-to-refresh', 2);
         },
         closeBottom: function () {
             this.loadingOpen = false;
-            pullUpDown.resume('bottom');
+            pulldown.resume('bottom');
         },
         handleUpMove: function (distinct) {
             if (distinct > 95) return;
@@ -122,7 +124,7 @@ module.exports = {
         handleUpEnd: function (distinct) {
             this.doms.rotateWrapper.removeAttribute('style');
             if (distinct >= 50) {
-                pullUpDown.pause('move').pause('end');
+                pullup.pause('move').pause('end');
                 //调用动画
                 window.requestAnimationFrame(this.drawCircle());
                 this.isWaiting = true;
@@ -136,7 +138,7 @@ module.exports = {
         closeUp: function () {
             this.isWaiting = false;
             this.isClose = true;
-            pullUpDown.resume('move').resume('end');
+            pullup.resume('move').resume('end');
             window.cancelAnimationFrame(this.count);
         }
     },
@@ -146,18 +148,22 @@ module.exports = {
                 this.closeUp();
             } else if (t == 2) {
                 this.closeBottom();
+            } else if (t == 3) {
+                
             }
         }
     },
     ready: function () {
-        this.doms.rotateWrapper = this.$el.querySelector('#__rotate__wrapper');
-        this.doms.rotateCanvas = this.$el.querySelector('#__rotate__canvas');
         if (this.up) {
-            pullUpDown.on('bottom', () => {
+            pulldown.start();
+            pulldown.on('bottom', () => {
                 this.handleBottom();
             });
         }
         if (this.down) {
+            pullup.start();
+            this.doms.rotateWrapper = this.$el.querySelector('#__rotate__wrapper');
+            this.doms.rotateCanvas = this.$el.querySelector('#__rotate__canvas');
             let cxt = this.doms.rotateCanvas.getContext('2d');
             cxt.strokeStyle = this.config.color;
             cxt.fillStyle = this.config.color;
@@ -166,11 +172,11 @@ module.exports = {
             this.cxt = cxt;
 
 
-            pullUpDown.on('move', (distinct) => {
+            pullup.on('move', (distinct) => {
                 this.handleUpMove(distinct);
             });
 
-            pullUpDown.on('end', (distinct) => {
+            pullup.on('end', (distinct) => {
                 this.handleUpEnd(distinct);
             });
         }
