@@ -10,98 +10,102 @@
     <base target="_blank">
     <title>vue-app</title>
     <style>
+
+        /**
+            transform
+                1: transform的值有先后顺序,如rotateX(40deg) translateZ(60px);表示先在X轴旋转40度,再在Z轴上移动60px
+                    如果translateZ(60px) rotateX(40deg);表示先在Z轴上移动60px,再在X轴旋转40度
+               2: transform-origin要和transform一起使用才有效
+        */
+
+        .m-picker, .m-picker * {
+            box-sizing: border-box;
+        }
+
         .m-picker {
             height: 200px;
             background-color: #ddd;
-            transform-style: preserve-3d;
-            -webkit-transform-style: preserve-3d;
-            perspective: 1000px;
-            -webkit-perspective: 1000px;
-            /*perspective-origin: center top;*/
-            /*-webkit-perspective-origin: center top;*/
         }
 
-        .m-picker .m-picker-cnt {
+        .m-picker .m-picker-inner {
             position: relative;
             height: 100%;
             width: 100%;
             -webkit-mask-box-image: -webkit-linear-gradient(bottom, transparent, transparent 5%, #fff 20%, #fff 80%, transparent 95%, transparent);
             -webkit-mask-box-image: linear-gradient(top, transparent, transparent 5%, #fff 20%, #fff 80%, transparent 95%, transparent);
-            /*transform: rotateX(60deg);*/
         }
 
-        .m-picker ul {
+        .m-picker .m-picker-inner .m-picker-list,
+        .m-picker .m-picker-inner .m-picker-rule {
+            z-index: 1;
+            position: absolute;
+            top: 50%;
+            margin-top: -18px;
+            width: 100%;
             list-style: none;
             padding: 0;
-            line-height: 30px;
-            height: 30px;
-            /*position: absolute;*/
-            /*top: 0;*/
-            margin: 0;
-            width: 100%;
+            line-height: 36px;
+            height: 36px;
         }
 
-        .m-picker ul li {
+        .m-picker .m-picker-inner .m-picker-rule {
+            z-index: 2;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .m-picker .m-picker-inner .m-picker-list {
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+            perspective: 1000px;
+            -webkit-perspective: 1000px;
+        }
+
+        .m-picker .m-picker-inner .m-picker-list li {
+            display: inline-block;
+            position: absolute;
+            width: 100%;
             text-align: center;
             font-size: 16px;
+            font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
             color: #888;
-            /*transform-origin: center center -20px;*/
-            /*-webkit-transform-origin: center center -20px;*/
-            /*position: absolute;*/
-            /*width: 100%;*/
-            /*height: 100%;*/
+            /* 超出的部分省略 */
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            /* 元素不面向屏幕时是否可见 */
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
 
-        .item1 {
-            transform: translateZ(0px) rotateX(60deg);
-            -webkit-transform: translateZ(0px) rotateX(60deg);
+        .m-picker .m-picker-inner .m-picker-list li.highlight {
+            color: #222;
         }
-
-        .item2 {
-            transform: translateZ(20px) rotateX(40deg);
-            -webkit-transform: translateZ(20px) rotateX(40deg);
-        }
-
-        .item3 {
-            transform: translateZ(40px) rotateX(20deg);
-            -webkit-transform: translateZ(40px) rotateX(20deg);
-        }
-
-        .item4 {
-            transform: translateZ(80px) rotateX(0deg);
-            -webkit-transform: translateZ(80px) rotateX(0deg);
-        }
-
-        .item5 {
-            transform: translateZ(40px) rotateX(-20deg);
-            -webkit-transform: translateZ(40px) rotateX(-20deg);
-        }
-
-        .item6 {
-            transform: translateZ(20px) rotateX(-40deg);
-            -webkit-transform: translateZ(20px) rotateX(-40deg);
-        }
-
-        .item7 {
-            transform: translateZ(0px) rotateX(-60deg);
-            -webkit-transform: translateZ(0px) rotateX(-60deg);
-        }
-
     </style>
 </head>
 <body>
 <div class="m-picker">
-    <div class="m-picker-cnt">
-        <ul>
-            <li class="item1">审批编码</li>
-            <li class="item2">申请人</li>
-            <li class="item3">申请部门</li>
-            <li class="item4" style="color: #222;">经办人</li>
-            <li class="item5">费用项目</li>
-            <li class="item6">福建书</li>
-            <li class="item7">审批人</li>
+    <div class="m-picker-inner">
+        <div class="m-picker-rule"></div>
+        <ul class="m-picker-list">
+            <li class="highlight">审批编码</li>
+            <li>申请人</li>
+            <li>申请部门</li>
+            <li>经办人</li>
+            <li>费用项目</li>
+            <li>福建书</li>
+            <li>审批人</li>
         </ul>
     </div>
 </div>
+
+<script>
+    var list = document.querySelector('.m-picker-list').querySelectorAll('li');
+    //var deg = 360 / list.length;
+    //var r = 64 / Math.tan(20 / 180 * Math.PI);
+    for (var i = 0; i < list.length; i++) {
+        list[i].style.transform = 'rotateX(' + (-20 * i) + 'deg) translateZ(' + 90 + 'px)';
+    }
+</script>
 </body>
 </html>
