@@ -1,8 +1,10 @@
 require('./style.styl');
+
+let touch = require('../../util/touch');
 module.exports = {
     template: require('./template.html'),
     data(){
-        return {open: false, fade: false};
+        return {open: false, fade: false, curIdx: 0};
     },
     props: ['list'],
     methods: {
@@ -27,5 +29,10 @@ module.exports = {
                 this.fade = true;
             }, 1);
         }
+    },
+    ready(){
+        //切换
+        touch.trigger('el', this.$el);
+        
     }
 };

@@ -9,70 +9,124 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <base target="_blank">
     <title>vue-app</title>
-    <link rel="stylesheet" href="../css/index.css">
     <style>
-        .btn {
-            display: inline-block;
-            padding: .375rem 1rem;
-            font-size: 1rem;
-            font-weight: normal;
-            line-height: 1.3;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: middle;
-            cursor: pointer;
-            outline: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            border: 1px solid #027CFF;
-            color: #027CFF;
-            background: transparent;
-            border-radius: .25rem;
+
+        /**
+            transform
+                1: transform的值有先后顺序,如rotateX(40deg) translateZ(60px);表示先在X轴旋转40度,再在Z轴上移动60px
+                    如果translateZ(60px) rotateX(40deg);表示先在Z轴上移动60px,再在X轴旋转40度
+               2: transform-origin要和transform一起使用才有效
+        */
+
+        .m-picker, .m-picker * {
+            box-sizing: border-box;
         }
-        #picker-canvas-box {
+
+        .m-picker {
+            height: 200px;
+            background-color: #ddd;
+        }
+
+        .m-picker .m-picker-inner {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            -webkit-mask-box-image: -webkit-linear-gradient(bottom, transparent, transparent 5%, #fff 20%, #fff 80%, transparent 95%, transparent);
+            -webkit-mask-box-image: linear-gradient(top, transparent, transparent 5%, #fff 20%, #fff 80%, transparent 95%, transparent);
+        }
+
+        .m-picker .m-picker-inner .m-picker-list,
+        .m-picker .m-picker-inner .m-picker-rule {
+            z-index: 1;
             position: absolute;
-            bottom: 0;
+            top: 50%;
+            margin-top: -18px;
+            width: 100%;
+            list-style: none;
+            padding: 0;
+            line-height: 36px;
+            height: 36px;
+        }
+
+        .m-picker .m-picker-inner .m-picker-rule {
             z-index: 2;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .m-picker .m-picker-inner .m-picker-list {
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+            perspective: 1000px;
+            -webkit-perspective: 1000px;
+        }
+
+        .m-picker .m-picker-inner .m-picker-list li {
+            display: inline-block;
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+            color: #888;
+            /* 超出的部分省略 */
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            /* 元素不面向屏幕时是否可见 */
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .m-picker .m-picker-inner .m-picker-list li.highlight {
+            color: #222;
         }
     </style>
 </head>
 <body>
-<canvas id="picker-canvas-box" height="220"></canvas>
-<div class="m-picker-box">
-    <div class="m-shade-layer"></div>
-    <div class="m-picker-body">
-        <div class="m-picker-cnt">
-            <ul>
-                <li class="item1">拍照拍照拍照拍照拍照拍照</li>
-                <li class="item2">图库中选择</li>
-                <li class="item3">取消</li>
-                <li class="mid">中间值</li>
-                <li class="item5">拍照</li>
-                <li class="item6">图库中选择</li>
-                <li class="item7">取消取消取消取消取消取消</li>
+<div style="width: 50%; float:left" id="left">
+    <div class="m-picker">
+        <div class="m-picker-inner">
+            <div class="m-picker-rule"></div>
+            <ul class="m-picker-list">
+                <li class="highlight">北京</li>
+                <li>天津</li>
+                <li>上海</li>
+                <li>安徽</li>
+                <li>黑龙江</li>
+                <li>吉林</li>
+                <li>吉林</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div style="width: 50%; float:right" id="right">
+    <div class="m-picker">
+        <div class="m-picker-inner">
+            <div class="m-picker-rule"></div>
+            <ul class="m-picker-list">
+                <li class="highlight">东城</li>
+                <li>西城</li>
+                <li>朝阳</li>
+                <li>海淀</li>
+                <li>丰台</li>
+                <li>石景山</li>
+                <li>昌平</li>
             </ul>
         </div>
     </div>
 </div>
 
 <script>
-    var pickerCanvas = document.querySelector('#picker-canvas-box');
-    pickerCanvas.width = window.innerWidth;
-    var style = getComputedStyle(pickerCanvas, '');
-    var width = parseInt(style.getPropertyValue('width'));
-    var height = parseInt(style.getPropertyValue('height'));
-    var ctx = pickerCanvas.getContext('2d');
-    ctx.strokeStyle = 'red';
-    ctx.fillStyle = 'red';
-    ctx.moveTo(width / 2, 0);
-    ctx.lineTo(width / 2, height);
-    ctx.moveTo(0, height / 2 - 17);
-    ctx.lineTo(width, height / 2 - 17);
-    ctx.moveTo(0, height / 2 + 17);
-    ctx.lineTo(width, height / 2 + 17);
-    ctx.stroke();
+    var list = document.querySelector('#left').querySelectorAll('li');
+    for (var i = 0; i < list.length; i++) {
+        list[i].style.transform = 'rotateX(' + (-20 * i) + 'deg) translateZ(' + 90 + 'px)';
+    }
+
+    var list = document.querySelector('#right').querySelectorAll('li');
+    for (var i = 0; i < list.length; i++) {
+        list[i].style.transform = 'rotateX(' + (-20 * i) + 'deg) translateZ(' + 90 + 'px)';
+    }
 </script>
 </body>
 </html>

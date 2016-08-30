@@ -32,6 +32,7 @@ var touch = {
             self.touchCancel();
         });
 
+        //重新绑定dom
         this.on('el', function (el) {
             self.el = el;
             self.reinit();
