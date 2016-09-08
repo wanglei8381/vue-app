@@ -1,4 +1,6 @@
 var Vue = require('vue');
+//引入全局变量
+require('./global');
 //引入自定义指令
 require('./directives');
 //引入全局组件

@@ -1,68 +1,74 @@
 //触摸事件处理
 var Event = require('./event');
+var domUtil = require('./dom');
 
-var touch = {
-    __proto__: new Event(touch),
-    el: document,
-    _add: function () {
-        this.add(this.el, 'touchstart', this.touchStart);
-        this.add(this.el, 'touchmove', this.touchMove);
-        this.add(this.el, 'touchend', this.touchEnd);
-        this.add(this.el, 'touchcancel', this.touchCancel);
-    },
-    _remove: function () {
-        this.remove(this.el, 'touchstart', this.touchStart);
-        this.remove(this.el, 'touchmove', this.touchMove);
-        this.remove(this.el, 'touchend', this.touchEnd);
-        this.remove(this.el, 'touchcancel', this.touchCancel);
-    },
-    init: function () {
-        this.firstTouch = null;
-        this.x1 = this.y1 = this.x2 = this.y2 = undefined;
-    },
-    reinit: function () {
-        this._remove();
-        this._add();
-    },
-    start: function () {
-        var self = this;
-        this._add();
-        this.add(window, 'scroll', function () {
-            self.trigger('scroll');
-            self.touchCancel();
-        });
+function Touch(el) {
+    this.el = el || document;
+    this.touch = null;
+    this.x1 = this.y1 = this.x2 = this.y2 = undefined;
+}
 
-        //重新绑定dom
-        this.on('el', function (el) {
-            self.el = el;
-            self.reinit();
-        });
-    },
-    touchStart: function (e) {
-        var firstTouch = e.touches[0];
-        this.firstTouch = firstTouch;
-        if (e.touches && e.touches.length === 1 && this.x2) {
-            this.x2 = this.y2 = undefined;
-        }
+Touch.prototype = new Event();
 
-        this.x1 = firstTouch.pageX;
-        this.y1 = firstTouch.pageY;
-        this.trigger('touchStart', e);
-    },
-    touchMove: function (e) {
-        var firstTouch = e.touches[0];
-        this.firstTouch = firstTouch;
-        this.x2 = firstTouch.pageX;
-        this.y2 = firstTouch.pageY;
-        this.trigger('touchMove', this.x1, this.y1, this.x2, this.y2, e);
-
-    },
-    touchEnd: function () {
-        this.trigger('touchEnd', this.x1, this.y1, this.x2, this.y2);
-    },
-    touchCancel: function () {
-        this.init();
-    }
+Touch.prototype._add = function () {
+    domUtil.add(this.el, 'touchstart', this.touchStart.bind(this), false);
+    domUtil.add(this.el, 'touchmove', this.touchMove.bind(this), false);
+    domUtil.add(this.el, 'touchend', this.touchEnd.bind(this), false);
+    domUtil.add(this.el, 'touchcancel', this.touchCancel.bind(this), false);
 };
-touch.start();
-module.exports = touch;
+
+Touch.prototype._remove = function () {
+    domUtil.remove(this.el, 'touchstart');
+    domUtil.remove(this.el, 'touchmove');
+    domUtil.remove(this.el, 'touchend');
+    domUtil.remove(this.el, 'touchcancel');
+};
+
+Touch.prototype.touchStart = function (e) {
+    var touch = e.touches[0];
+    this.touch = touch;
+    this.touch.el = 'tagName' in touch.target ?
+        touch.target : touch.target.parentNode;
+    if (e.touches && e.touches.length === 1 && this.x2) {
+        this.x2 = this.y2 = undefined;
+    }
+
+    this.x1 = touch.pageX;
+    this.y1 = touch.pageY;
+    this.trigger('touch:start', e);
+};
+
+Touch.prototype.touchMove = function (e) {
+    var touch = e.touches[0];
+    this.touch = touch;
+    this.x2 = touch.pageX;
+    this.y2 = touch.pageY;
+    this.trigger('touch:move', this.x1, this.y1, this.x2, this.y2, e);
+};
+
+Touch.prototype.touchEnd = function () {
+    this.trigger('touch:end', this.x1, this.y1, this.x2, this.y2);
+};
+
+Touch.prototype.touchCancel = function () {
+    this.touch = null;
+    this.x1 = this.y1 = this.x2 = this.y2 = undefined;
+};
+
+Touch.prototype.start = function () {
+    this._add();
+
+    this.el.addEventListener('scroll', () => {
+        this.touchCancel();
+        this.trigger('touch:scroll');
+    }, false);
+
+    //重新绑定dom
+    this.on('touch:el', (el) => {
+        this._remove();
+        this.el = el;
+        this._add();
+    });
+};
+
+module.exports = Touch;

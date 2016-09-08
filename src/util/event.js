@@ -1,68 +1,131 @@
 /**
  * Event事件对象
+ * cxt上下文
  * @constructor
  */
-function Event(__raw) {
+function Event(cxt) {
     this._events = {};
-    this.__raw = __raw;
+    this.cxt = cxt;
+}
+
+//off,pause,resume通用方法
+function eventsApi(self, name, cb, cxt) {
+    var events = {};
+
+    for (var key in self._events) {
+        events[key] = self._events[key];
+    }
+
+    if (name) {
+        events = {};
+        name.split(/\s/).forEach(function (ename) {
+            if (ename && self._events[ename]) {
+                events[ename] = self._events[ename];
+            }
+        });
+    }
+
+    var keys = Object.keys(events);
+    if (keys.length === 0) return this;
+
+    if (cb && typeof cb === 'function') {
+        keys.forEach(function (key) {
+            events[key] = events[key].filter(function (event) {
+                return event.cb == cb;
+            });
+        });
+    }
+
+    if (cxt) {
+        keys.forEach(function (key) {
+            events[key] = events[key].filter(function (event) {
+                return event.cxt == cxt;
+            });
+        });
+    }
+
+    return events;
+}
+
+//暂停,恢复通用方法
+function eventsPauseApi(self, name, cb, cxt, val) {
+    var events = eventsApi(self, name, cb, cxt);
+    for (var key in events) {
+        events[key].forEach(function (item) {
+            item.pause = val;
+        });
+    }
+}
+
+//on,once通用方法
+function eventsOnApi(self, name, cb, cxt, once) {
+    if (!name || typeof cb != 'function' || typeof name !== 'string') return this;
+    name.split(/\s/).forEach(function (ename) {
+        if (!ename) return;
+        var handlers = self._events[ename] || [];
+        handlers.push({
+            cb: cb,
+            cxt: cxt || self.cxt || self,
+            pause: false,
+            i: 0,
+            once: once
+        });
+        self._events[ename] = handlers;
+    });
 }
 
 /**
  * 绑定一个事件
- * @param name
+ * @param name 只能是字符串
  * @param cb
  * @param cxt
  * @returns {Event}
  */
 Event.prototype.on = function (name, cb, cxt) {
-    var self = this;
-    name.split(/\s/).forEach(function (ename) {
-        var events = self._events[ename] || {
-                handle: [],
-                pause: false
-            };
-        events.handle.push({
-            cb: cb,
-            cxt: cxt || self.__raw || self,
+    eventsOnApi(this, name, cb, cxt, false);
+    return this;
+};
+
+Event.prototype.once = function (name, cb, cxt) {
+    eventsOnApi(this, name, cb, cxt, true);
+    return this;
+};
+
+/**
+ * 卸载某个事件
+ * @param name
+ * @returns {Event}
+ */
+Event.prototype.off = function (name, cb, cxt) {
+
+    var events = eventsApi(this, name, cb, cxt);
+    for (var key in events) {
+        var e = this._events[key];
+        events[key].slice(0).forEach(function (item) {
+            e.splice(e.indexOf(item), 1);
         });
-        self._events[ename] = events;
-    });
+    }
+
+    return this;
+}
+
+/**
+ * 暂停某个事件,用法同off
+ * @param name
+ * @returns {Event}
+ */
+Event.prototype.pause = function (name, cb, cxt) {
+    eventsPauseApi(this, name, cb, cxt, true);
     return this;
 };
 
 /**
- * 卸载某个事件,全部卸载,暂时不做颗粒化
+ * 恢复某个事件,用法同off
  * @param name
  * @returns {Event}
  */
-Event.prototype.off = function (name) {
-    if (name in this._events) {
-        delete this._events[name];
-    }
-    return this;
-};
-
-/**
- * 暂停某个事件,全部暂停,暂时不做颗粒化
- * @param name
- * @returns {Event}
- */
-Event.prototype.pause = function (name) {
-    if (name in this._events) {
-        this._events[name].pause = true;
-    }
-    return this;
-};
-
-/**
- * 恢复某个事件,全部恢复,暂时不做颗粒化
- * @param name
- * @returns {Event}
- */
-Event.prototype.resume = function (name) {
-    if (name in this._events) {
-        this._events[name].pause = false;
-    }
+Event.prototype.resume = function (name, cb, cxt) {
+    eventsPauseApi(this, name, cb, cxt, false);
     return this;
 };
 
@@ -72,52 +135,26 @@ Event.prototype.resume = function (name) {
  * @returns {Event}
  */
 Event.prototype.trigger = function (name) {
-    var events = this._events[name];
-    if (events && !events.pause) {
-        var len = arguments.length;
-        var args = [], i = 1;
-        while (i < len) {
-            args.push(arguments[i++]);
-        }
-        events.handle.forEach(function (handle) {
-            if (typeof handle.cb === 'function') {
-                handle.cb.apply(handle.cxt, args);
-            }
-        });
+
+    var self = this;
+    if (!name || typeof name !== 'string') return this;
+    var len = arguments.length;
+    var args = [], i = 1;
+    while (i < len) {
+        args.push(arguments[i++]);
     }
-    return this;
-};
 
-/**
- * 绑定dom事件
- * @param el
- * @param name
- * @param cb
- * @param useCapture
- * @returns {Event}
- */
-Event.prototype.add = function (el, name, cb, useCapture) {
-    //this.on(name, cb);
-    var self = this;
-    el.addEventListener(name, function (e) {
-        cb.call(self, e);
-    }, !!useCapture);
-    return this;
-};
+    name.split(/\s/).forEach(function (ename) {
+        if (ename && self._events[ename]) {
+            self._events[ename].forEach(function (handle) {
+                if (!handle.pause && !(handle.i === 1 && handle.once)) {
+                    handle.cb.apply(handle.cxt, args);
+                    handle.i++;
+                }
+            });
+        }
+    });
 
-/**
- * 删除dom事件
- * @param el
- * @param name
- * @param cb
- * @returns {Event}
- */
-Event.prototype.remove = function (el, name, cb) {
-    //this.off(name);
-    var self = this;
-    el.removeEventListener(name, function (e) {
-        cb.call(self, e);
-    }, false);
     return this;
 };
 
