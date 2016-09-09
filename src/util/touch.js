@@ -40,10 +40,13 @@ Touch.prototype.touchStart = function (e) {
 
 Touch.prototype.touchMove = function (e) {
     var touch = e.touches[0];
+    var toUp = this.y2 > touch.pageY;
+    var toLeft = this.x2 > touch.pageX;
     this.touch = touch;
     this.x2 = touch.pageX;
     this.y2 = touch.pageY;
-    this.trigger('touch:move', this.x1, this.y1, this.x2, this.y2, e);
+
+    this.trigger('touch:move', this.x1, this.y1, this.x2, this.y2, e, toUp, toLeft);
 };
 
 Touch.prototype.touchEnd = function () {

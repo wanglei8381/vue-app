@@ -10,10 +10,16 @@ module.exports = {
             curIdx: 0
         };
     },
-    props: ['list'],
+    props: ['list', 'picker'],
     computed: {
         maxVal(){
-            return (this.list.length - 1) * 20
+            return (this.list.length - 1) * 20;
+        }
+    },
+    watch: {
+        list(){
+            this.$nextTick(()=> {
+            });
         }
     },
     methods: {
@@ -26,6 +32,12 @@ module.exports = {
             setTimeout(()=> {
                 this.open = false;
             }, 300);
+        },
+        move(){
+
+        },
+        end(){
+
         }
 
     },
@@ -34,23 +46,43 @@ module.exports = {
         var touch = new Touch(this.$el);
         touch.start();
         this.touch = touch;
-        this.$list = this.$el.querySelector('.m-picker-list');
+        this.$container = this.$el.querySelector('.m-picker-list');
+        this.$list = this.$container.querySelectorAll('li');
         touch.on('touch:start', (e)=> {
 
         });
 
         let distinct = 0;
-        touch.on('touch:move', (x1, y1, x2, y2, e)=> {
+        touch.on('touch:move', (x1, y1, x2, y2, e, toUp, toLeft)=> {
+            console.log(toUp);
             e.preventDefault();
             let deltaY = y1 - y2;
-            distinct += deltaY / 50;
+            if (toUp) {
+                distinct += deltaY / 30;
+            } else {
+                distinct -= deltaY / 30;
+            }
             if (distinct > this.maxVal) {
                 distinct = this.maxVal;
             }
             if (distinct < 0) {
                 distinct = 0;
             }
-            this.$list.style.transform = 'rotateX(' + distinct + 'deg)';
+
+            let base = parseInt(distinct / 20);
+            let min = 20 * base;
+            let max = min + 20;
+            let interval = max;
+            if (distinct - min <= max - distinct) {
+                interval = min;
+            }
+            //选中的下表
+            let idx = interval / 20;
+            this.$list[this.curIdx].classList.remove('highlight');
+            this.$list[idx].classList.add('highlight');
+            this.curIdx = idx;
+
+            this.$container.style.transform = 'rotateX(' + distinct + 'deg)';
         });
 
         touch.on('touch:end', ()=> {
@@ -65,15 +97,21 @@ module.exports = {
             } else {
                 distinct = max;
             }
-            this.$list.style.transform = 'rotateX(' + distinct + 'deg)';
-            this.$list.style.webkitTransition = '100ms ease-out';
+            //选中的下表
+            // let idx = distinct / 20;
+            // this.picker = this.list[idx];
+            // this.$list[this.curIdx].classList.remove('highlight');
+            // this.$list[idx].classList.add('highlight');
+            // this.curIdx = idx;
+            this.$container.style.transform = 'rotateX(' + distinct + 'deg)';
+            this.$container.style.webkitTransition = '100ms ease-out';
         });
 
-        this.$el.addEventListener("transitionend", ()=> {
-            this.$list.style.webkitTransition = null;
-        }, true);
-        this.$el.addEventListener("transitionend", ()=> {
-            this.$list.style.webkitTransition = null;
+        // this.$el.addEventListener("transitionend", ()=> {
+        //     this.$container.style.webkitTransition = null;
+        // }, true);
+        this.$el.addEventListener("webkitTransitionEnd", ()=> {
+            this.$container.style.webkitTransition = null;
         }, true);
 
     }

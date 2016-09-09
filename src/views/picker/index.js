@@ -15,8 +15,14 @@ module.exports = {
                 {label: '河南', value: 7},
                 {label: '山东', value: 8},
                 {label: '江苏', value: 9}
-            ]
+            ],
+            item: null
         };
+    },
+    watch: {
+        item(val){
+            console.log(JSON.stringify(val));
+        }
     },
     methods: {
         goto: function (link) {
