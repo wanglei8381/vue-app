@@ -32,16 +32,11 @@ module.exports = {
             setTimeout(()=> {
                 this.open = false;
             }, 300);
-        },
-        move(){
-
-        },
-        end(){
-
         }
 
     },
     ready(){
+
         //切换
         var touch = new Touch(this.$el);
         touch.start();
@@ -49,24 +44,19 @@ module.exports = {
         this.$container = this.$el.querySelector('.m-picker-list');
         this.$list = this.$container.querySelectorAll('li');
         touch.on('touch:start', (e)=> {
-
         });
 
         let distinct = 0;
-        touch.on('touch:move', (x1, y1, x2, y2, e, toUp, toLeft)=> {
-            console.log(toUp);
-            e.preventDefault();
-            let deltaY = y1 - y2;
-            if (toUp) {
-                distinct += deltaY / 30;
-            } else {
-                distinct -= deltaY / 30;
+        let speed = 0.5;
+        touch.on('touch:move', (rep)=> {
+            rep.e.preventDefault();
+            distinct += rep.yrange * speed;
+
+            if (distinct > this.maxVal + 20) {
+                distinct = this.maxVal + 20;
             }
-            if (distinct > this.maxVal) {
-                distinct = this.maxVal;
-            }
-            if (distinct < 0) {
-                distinct = 0;
+            if (distinct < -20) {
+                distinct = -20;
             }
 
             let base = parseInt(distinct / 20);
@@ -76,18 +66,24 @@ module.exports = {
             if (distinct - min <= max - distinct) {
                 interval = min;
             }
-            //选中的下表
-            let idx = interval / 20;
-            this.$list[this.curIdx].classList.remove('highlight');
-            this.$list[idx].classList.add('highlight');
-            this.curIdx = idx;
+
+            if (distinct >= 0 && distinct <= this.maxVal) {
+                //选中的下表
+                let idx = interval / 20;
+                this.$list[this.curIdx].classList.remove('highlight');
+                this.$list[idx].classList.add('highlight');
+                this.curIdx = idx;
+            }
 
             this.$container.style.transform = 'rotateX(' + distinct + 'deg)';
         });
 
-        touch.on('touch:end', ()=> {
+        touch.on('touch:end', (rep)=> {
             if (distinct > this.maxVal) {
                 distinct = this.maxVal;
+            }
+            if (distinct < 0) {
+                distinct = 0;
             }
             let base = parseInt(distinct / 20);
             let min = 20 * base;
@@ -97,22 +93,13 @@ module.exports = {
             } else {
                 distinct = max;
             }
-            //选中的下表
-            // let idx = distinct / 20;
-            // this.picker = this.list[idx];
-            // this.$list[this.curIdx].classList.remove('highlight');
-            // this.$list[idx].classList.add('highlight');
-            // this.curIdx = idx;
             this.$container.style.transform = 'rotateX(' + distinct + 'deg)';
             this.$container.style.webkitTransition = '100ms ease-out';
         });
 
-        // this.$el.addEventListener("transitionend", ()=> {
-        //     this.$container.style.webkitTransition = null;
-        // }, true);
         this.$el.addEventListener("webkitTransitionEnd", ()=> {
             this.$container.style.webkitTransition = null;
-        }, true);
+        });
 
     }
 };

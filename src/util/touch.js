@@ -3,8 +3,11 @@ var Event = require('./event');
 var domUtil = require('./dom');
 
 function Touch(el) {
+    Event.call(this);
     this.el = el || document;
     this.touch = null;
+    this.lastTimestamp = Date.now();
+    this.spend = 0;
     this.x1 = this.y1 = this.x2 = this.y2 = undefined;
 }
 
@@ -25,6 +28,7 @@ Touch.prototype._remove = function () {
 };
 
 Touch.prototype.touchStart = function (e) {
+    this.lastTimestamp = Date.now();
     var touch = e.touches[0];
     this.touch = touch;
     this.touch.el = 'tagName' in touch.target ?
@@ -39,28 +43,53 @@ Touch.prototype.touchStart = function (e) {
 };
 
 Touch.prototype.touchMove = function (e) {
+    this.spend = Date.now() - this.lastTimestamp;
     var touch = e.touches[0];
-    var toUp = this.y2 > touch.pageY;
-    var toLeft = this.x2 > touch.pageX;
-    this.touch = touch;
+    var yrange = this.y2 - touch.pageY;
+    var xrange = this.x2 - touch.pageX;
     this.x2 = touch.pageX;
     this.y2 = touch.pageY;
 
-    this.trigger('touch:move', this.x1, this.y1, this.x2, this.y2, e, toUp, toLeft);
+    this.trigger('touch:move', {
+        x1: this.x1,
+        y1: this.y1,
+        x2: this.x2,
+        y2: this.y2,
+        e: e,
+        toUp: yrange > 0,
+        toLeft: xrange > 0,
+        xrange: xrange || 0,
+        yrange: yrange || 0,
+        spend: this.spend
+    });
 };
 
 Touch.prototype.touchEnd = function () {
-    this.trigger('touch:end', this.x1, this.y1, this.x2, this.y2);
+    this.spend = Date.now() - this.lastTimestamp;
+    this.trigger('touch:end', {
+        x1: this.x1,
+        y1: this.y1,
+        x2: this.x2,
+        y2: this.y2,
+        spend: this.spend
+    });
 };
 
 Touch.prototype.touchCancel = function () {
+    this.trigger('touch:cancel', {
+        x1: this.x1,
+        y1: this.y1,
+        x2: this.x2,
+        y2: this.y2,
+        spend: this.spend
+    });
+    this.spend = 0;
     this.touch = null;
     this.x1 = this.y1 = this.x2 = this.y2 = undefined;
 };
 
 Touch.prototype.start = function () {
     this._add();
-
     this.el.addEventListener('scroll', () => {
         this.touchCancel();
         this.trigger('touch:scroll');
