@@ -55,6 +55,15 @@ module.exports = {
 
             this.$container.style.transform = 'rotateX(' + distinct + 'deg)';
             this.distinct = distinct;
+            this.showCal();
+        },
+        showCal(){
+            if (this.list.length <= 15) return;
+            let min = this.curIdx - 5;
+            let max = this.curIdx + 5;
+            for (let i = 0, len = this.list.length; i < len; i++) {
+                this.$list[i].style.visibility = (i >= min && i <= max ? 'visible' : 'hidden');
+            }
         }
     },
     ready(){
@@ -65,6 +74,8 @@ module.exports = {
         this.touch = touch;
         this.$container = this.$el.querySelector('.m-picker-list');
         this.$list = this.$container.querySelectorAll('li');
+        this.$list[0].classList.add('highlight');
+        this.showCal();
         touch.on('touch:start', (res)=> {
             res.e.preventDefault();
         });
