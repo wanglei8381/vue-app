@@ -39,7 +39,11 @@ Touch.prototype.touchStart = function (e) {
 
     this.x1 = touch.pageX;
     this.y1 = touch.pageY;
-    this.trigger('touch:start', e);
+    this.trigger('touch:start', {
+        e: e,
+        el: this.touch.el,
+        timestamp: this.lastTimestamp
+    });
 };
 
 Touch.prototype.touchMove = function (e) {
@@ -64,13 +68,14 @@ Touch.prototype.touchMove = function (e) {
     });
 };
 
-Touch.prototype.touchEnd = function () {
+Touch.prototype.touchEnd = function (e) {
     this.spend = Date.now() - this.lastTimestamp;
     this.trigger('touch:end', {
         x1: this.x1,
         y1: this.y1,
         x2: this.x2,
         y2: this.y2,
+        e: e,
         spend: this.spend
     });
 };

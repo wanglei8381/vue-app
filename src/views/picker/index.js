@@ -16,7 +16,7 @@ module.exports = {
                 {label: '山东', value: 8},
                 {label: '江苏', value: 9}
             ],
-            item: null
+            item: {label: '北京', value: 1}
         };
     },
     watch: {

@@ -5,10 +5,10 @@ module.exports = {
     template: require('./template.html'),
     data(){
         return {
-            open: false,
-            fade: false,
-            curIdx: 0
-        };
+            curIdx: 0,
+            distinct: 0,
+            speed: 0.5
+        }
     },
     props: ['list', 'picker'],
     computed: {
@@ -16,47 +16,25 @@ module.exports = {
             return (this.list.length - 1) * 20;
         }
     },
-    watch: {
-        list(){
-            this.$nextTick(()=> {
-            });
-        }
-    },
     methods: {
-        choose(item, idx, event){
-            this.close();
-            this.$dispatch('accept-action-sheet', idx, item.value, item.label);
+        move(res){
+            let distinct = this.distinct;
+            distinct += res.yrange * this.speed;
+            this.internalCal(distinct);
         },
-        close(){
-            this.fade = false;
-            setTimeout(()=> {
-                this.open = false;
-            }, 300);
-        }
-
-    },
-    ready(){
-
-        //切换
-        var touch = new Touch(this.$el);
-        touch.start();
-        this.touch = touch;
-        this.$container = this.$el.querySelector('.m-picker-list');
-        this.$list = this.$container.querySelectorAll('li');
-        touch.on('touch:start', (e)=> {
-        });
-
-        let distinct = 0;
-        let speed = 0.5;
-        touch.on('touch:move', (rep)=> {
-            rep.e.preventDefault();
-            distinct += rep.yrange * speed;
-
-            if (distinct > this.maxVal + 20) {
-                distinct = this.maxVal + 20;
+        end(){
+            let distinct = this.distinct;
+            this.internalCal(distinct, true);
+            this.$container.style.webkitTransition = '100ms ease-out';
+            this.picker = this.list[this.curIdx];
+        },
+        internalCal(distinct, isEnd){
+            let baseNum = isEnd ? -0 : 20;
+            if (distinct > this.maxVal + baseNum) {
+                distinct = this.maxVal + baseNum;
             }
-            if (distinct < -20) {
-                distinct = -20;
+            if (distinct < -baseNum) {
+                distinct = -baseNum;
             }
 
             let base = parseInt(distinct / 20);
@@ -66,7 +44,7 @@ module.exports = {
             if (distinct - min <= max - distinct) {
                 interval = min;
             }
-
+            distinct = isEnd ? interval : distinct;
             if (distinct >= 0 && distinct <= this.maxVal) {
                 //选中的下表
                 let idx = interval / 20;
@@ -76,28 +54,32 @@ module.exports = {
             }
 
             this.$container.style.transform = 'rotateX(' + distinct + 'deg)';
+            this.distinct = distinct;
+        }
+    },
+    ready(){
+
+        //切换
+        var touch = new Touch(this.$el);
+        touch.start();
+        this.touch = touch;
+        this.$container = this.$el.querySelector('.m-picker-list');
+        this.$list = this.$container.querySelectorAll('li');
+        touch.on('touch:start', (res)=> {
+            res.e.preventDefault();
         });
 
-        touch.on('touch:end', (rep)=> {
-            if (distinct > this.maxVal) {
-                distinct = this.maxVal;
-            }
-            if (distinct < 0) {
-                distinct = 0;
-            }
-            let base = parseInt(distinct / 20);
-            let min = 20 * base;
-            let max = min + 20;
-            if (distinct - min <= max - distinct) {
-                distinct = min;
-            } else {
-                distinct = max;
-            }
-            this.$container.style.transform = 'rotateX(' + distinct + 'deg)';
-            this.$container.style.webkitTransition = '100ms ease-out';
+        touch.on('touch:move', (res)=> {
+            res.e.preventDefault();
+            this.move(res);
         });
 
-        this.$el.addEventListener("webkitTransitionEnd", ()=> {
+        touch.on('touch:end', (res)=> {
+            res.e.preventDefault();
+            this.end(res);
+        });
+
+        this.$container.addEventListener("webkitTransitionEnd", ()=> {
             this.$container.style.webkitTransition = null;
         });
 
