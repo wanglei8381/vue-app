@@ -1,0 +1,61 @@
+//== css重新设置
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  &:before,
+  &:after {
+    box-sizing: border-box;
+  }
+}
+
+html {
+  font-size 16px
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+ul, ol {
+  list-style none
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size 1rem
+  font-weight normal
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0px;
+}
+
+img {
+  vertical-align: middle;
+}
+
+a {
+  color: $link-color;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: $link-hover-color;
+    text-decoration: $link-hover-decoration;
+  }
+
+}
+
+hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 0;
+  border-top: 1px solid #ddd;
+}
+
+input, textarea {
+  padding 5px 10px
+  outline none
+  border 1px solid #ddd;
+  /*&:focus {
+    border-color $web-color-base
+  }*/
+}

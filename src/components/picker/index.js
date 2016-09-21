@@ -5,12 +5,45 @@ module.exports = {
     template: require('./template.html'),
     data(){
         return {
-            curIdx: 0,
             distinct: 0,
             speed: 0.5
         }
     },
-    props: ['list', 'picker'],
+    props: {
+        list: {
+            type: Array,
+            required: true
+        },
+        picker: {
+            type: Object,
+            required: true,
+            twoWay: true
+        },
+        label: {
+            type: String,
+            required: false,
+            coerce: function (val) {
+                return val || 'label';
+            }
+        },
+        value: {
+            type: String,
+            required: false,
+            coerce: function (val) {
+                return val || 'value';
+            }
+        },
+        curIdx: {
+            type: Number,
+            required: false,
+            coerce: function (val) {
+                return val || 0;
+            }
+        }
+    },
+    watch: {
+        list: 'reload'
+    },
     computed: {
         maxVal(){
             return (this.list.length - 1) * 20;
@@ -64,18 +97,26 @@ module.exports = {
             for (let i = 0, len = this.list.length; i < len; i++) {
                 this.$list[i].style.visibility = (i >= min && i <= max ? 'visible' : 'hidden');
             }
+        },
+        reload() {
+            //切换
+            this.$container = this.$el.querySelector('.m-picker-list');
+            this.$list = this.$container.querySelectorAll('li');
+            this.$list[0].classList.add('highlight');
+            this.showCal();
+            this.$container.style.transform = 'rotateX(0deg)';
+            this.$container.addEventListener("webkitTransitionEnd", ()=> {
+                this.$container.style.webkitTransition = null;
+            });
         }
     },
     ready(){
+        if (this.list.length > 0) {
+            this.reload();
+        }
 
-        //切换
         var touch = new Touch(this.$el);
         touch.start();
-        this.touch = touch;
-        this.$container = this.$el.querySelector('.m-picker-list');
-        this.$list = this.$container.querySelectorAll('li');
-        this.$list[0].classList.add('highlight');
-        this.showCal();
         touch.on('touch:start', (res)=> {
             res.e.preventDefault();
         });
@@ -89,10 +130,5 @@ module.exports = {
             res.e.preventDefault();
             this.end(res);
         });
-
-        this.$container.addEventListener("webkitTransitionEnd", ()=> {
-            this.$container.style.webkitTransition = null;
-        });
-
     }
 };

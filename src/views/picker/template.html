@@ -1,11 +1,26 @@
 <div>
-  <div style="width: 50%;float:left;">
-    <picker-cpt :list="list" :picker.sync="item"></picker-cpt>
+  <header-cpt left-cnt="<i class='iconfont'>&#xe601;</i>" title="picker"></header-cpt>
+  <div class="choose-result">
+    <button class="btn" @click.stop="choose">选择省市区</button>
+    <p class="choose-result-cnt">选中了:{{message}}</p>
   </div>
 
-  <div style="width: 50%;float:right;">
-    <picker-cpt :list="list" :picker.sync="item"></picker-cpt>
+  <div class="picker-wrapper" @click.stop :class="{'open':open}">
+    <div class="picker-action">
+      <button class="btn btn-cancle" @click="cancle">取消</button>
+      <button class="btn btn-confirm" @click="confirm">确定</button>
+    </div>
+    <div style="width: 33.333%;float:left;">
+      <picker-cpt :list="provinceList" :picker.sync="province" :cur-idx.sync="provinceIdx" label="name" value="code"></picker-cpt>
+    </div>
+
+    <div style="width: 33.333%;float:left;">
+      <picker-cpt :list="cityList" :picker.sync="city" :cur-idx.sync="cityIdx" label="name" value="code"></picker-cpt>
+    </div>
+
+    <div style="width: 33.333%;float:left;">
+      <picker-cpt :list="areaList" :picker.sync="area" :cur-idx.sync="areaIdx" label="name" value="code"></picker-cpt>
+    </div>
   </div>
 
-  <div class="choose-result">选中了:{{item.label}}</div>
 </div>
