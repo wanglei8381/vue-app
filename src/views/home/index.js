@@ -21,6 +21,10 @@ var list = [
     {
         title: 'actionsheet',
         link: '/actionsheet'
+    },
+    {
+        title: 'bounce',
+        link: '/bounce'
     }
 ];
 

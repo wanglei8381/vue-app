@@ -32,6 +32,11 @@ router.map({
             require(['./views/picker'], resolve);
         }
     },
+    '/bounce': {
+        component: function (resolve) {
+            require(['./views/bounce'], resolve);
+        }
+    },
     '*action': {
         component: function (resolve) {
             require(['./views/home'], resolve);

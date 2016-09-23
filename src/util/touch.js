@@ -62,6 +62,7 @@ Touch.prototype.touchMove = function (e) {
         e: e,
         toUp: yrange > 0,
         toLeft: xrange > 0,
+        dir: swipeDirection(this.x1, this.x2, this.y1, this.y2),
         xrange: xrange || 0,
         yrange: yrange || 0,
         spend: this.spend
@@ -75,12 +76,14 @@ Touch.prototype.touchEnd = function (e) {
         y1: this.y1,
         x2: this.x2,
         y2: this.y2,
+        dir: swipeDirection(this.x1, this.x2, this.y1, this.y2),
         e: e,
         spend: this.spend
     });
 };
 
 Touch.prototype.touchCancel = function () {
+    //this.pause('touch:start touch:move touch:end');
     this.trigger('touch:cancel', {
         x1: this.x1,
         y1: this.y1,
@@ -95,9 +98,21 @@ Touch.prototype.touchCancel = function () {
 
 Touch.prototype.start = function () {
     this._add();
-    this.el.addEventListener('scroll', () => {
+
+    this.el.addEventListener('scroll', (e) => {
         this.touchCancel();
         this.trigger('touch:scroll');
+    }, false);
+
+    document.addEventListener('scroll', (e) => {
+        this.touchCancel();
+        this.trigger('scroll');
+        // if (document.documentElement.clientHeight + document.body.scrollTop === document.documentElement.scrollHeight) {
+        //     this.resume('touch:start touch:move touch:end');
+        // }
+        // if (document.body.scrollTop === 0) {
+        //     this.resume('touch:start touch:move touch:end');
+        // }
     }, false);
 
     //重新绑定dom
@@ -107,5 +122,10 @@ Touch.prototype.start = function () {
         this._add();
     });
 };
+
+function swipeDirection(x1, x2, y1, y2) {
+    return Math.abs(x1 - x2) >=
+    Math.abs(y1 - y2) ? (x1 - x2 > 0 ? 'left' : 'right') : (y1 - y2 > 0 ? 'up' : 'down')
+}
 
 module.exports = Touch;
