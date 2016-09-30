@@ -7,7 +7,14 @@
     "md5": "^2.1.0",
     "vue": "^1.0.24",
     "vue-router": "^0.7.13",
-    "zepto": "^1.0.1"
+    "zepto": "^1.0.1",
+    "vue-m-region-picker": "^0.0.2",
+    "vue-m-picker": "^0.0.2",
+    "vue-m-actionsheet": "^0.0.2",
+    "vue-pullrefresh": "^0.0.5",
+    "vue-scroll-loading": "^0.0.3",
+    "vue-img-lazyload": "^0.0.4",
+    "vue-m-touch": "^0.0.2"
   },
   "devDependencies": {
     "babel-core": "^6.9.0",

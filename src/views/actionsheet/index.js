@@ -2,9 +2,11 @@ require('./style.css');
 
 module.exports = {
     template: require('./template.html'),
-    data: function () {
+    data() {
         return {
             msg: '选择...',
+            open: false,
+            picker: null,
             list: [
                 {label: '拍照', value: 'paizhao'},
                 {label: '图库中选择', value: 'tuku'},
@@ -12,15 +14,17 @@ module.exports = {
             ]
         };
     },
+    watch: {
+        'picker': function (picker) {
+            this.msg = '[' + picker.value + '][' + picker.label + ']';
+        }
+    },
     methods: {
         choose: function () {
-            this.$broadcast('choose-action-sheet');
+            this.open = true;
         }
     },
     events: {
-        'accept-action-sheet': function (idx, value, label) {
-            this.msg = '[' + idx + '][' + value + '][' + label + ']';
-        },
         'left-nav'(e){
             this.$router.go('/');
         }

@@ -11,20 +11,20 @@
     <title>{{title}}</title>
     <link rel="stylesheet" href="public/css/index.css">
     <link rel="stylesheet" href="dist/css/index.css">
-    <script src="http://apps.bdimg.com/libs/zepto/1.1.4/zepto.min.js"></script>
-    <script>
-        var LOG = function (msg) {
-            $.ajax({
-                type: 'get',
-                url: 'http://10.1.211.142:8000',
-                data: {msg: msg},
-                dataType: 'jsonp'
-            });
+    <!--<script src="http://apps.bdimg.com/libs/zepto/1.1.4/zepto.min.js"></script>-->
+    <!--<script>-->
+        <!--var LOG = function (msg) {-->
+            <!--$.ajax({-->
+                <!--type: 'get',-->
+                <!--url: 'http://10.1.211.142:8000',-->
+                <!--data: {msg: msg},-->
+                <!--dataType: 'jsonp'-->
+            <!--});-->
 
-        }
-    </script>
+        <!--}-->
+    <!--</script>-->
 </head>
-<body  v-ele-bounce>
+<body>
 <router-view></router-view>
 <script src="dist/index.js"></script>
 </body>

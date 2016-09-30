@@ -1,5 +1,5 @@
-<div>
-  <pullrefresh-cpt></pullrefresh-cpt>
+<div v-scroll="request">
+  <pullrefresh></pullrefresh>
   <header-cpt left-cnt="<i class='iconfont'>&#xe601;</i>" title="pull to refresh"></header-cpt>
   <section class="m-body">
     <ul class="actions">
@@ -9,4 +9,5 @@
       </li>
     </ul>
   </section>
+  <div class="scroll-loading-wrapper">加载中..</div>
 </div>
