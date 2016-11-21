@@ -2,19 +2,15 @@
   "name": "vue-app",
   "version": "0.0.1",
   "dependencies": {
-    "base64-js": "^1.1.2",
-    "director": "^1.2.8",
-    "md5": "^2.1.0",
-    "vue": "^1.0.24",
-    "vue-router": "^0.7.13",
-    "zepto": "^1.0.1",
-    "vue-m-region-picker": "^0.0.2",
-    "vue-m-picker": "^0.0.2",
-    "vue-m-actionsheet": "^0.0.2",
-    "vue-pullrefresh": "^0.0.5",
-    "vue-scroll-loading": "^0.0.3",
-    "vue-img-lazyload": "^0.0.4",
-    "vue-m-touch": "^0.0.2"
+    "vue": "^2.0.8",
+    "vue-router": "^2.0.3",
+    "vue-m-touch": "^0.0.6",
+    "vue-m-picker": "^1.0.4",
+    "vue-m-region-picker": "^1.0.0",
+    "vue-m-swiper": "^1.0.0",
+    "vue-pullrefresh": "^0.0.6",
+    "vue-scroll-loading": "^0.0.6",
+    "vue-img-lazyload": "^0.0.6"
   },
   "devDependencies": {
     "babel-core": "^6.9.0",

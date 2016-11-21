@@ -4,7 +4,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     entry: {
-        index: "./src/main.js"
+        index: "./src/app.js"
     },
     output: {
         path: "./dist",
@@ -31,6 +31,9 @@ module.exports = {
         ]
     },
     resolve: {
+        alias: {
+            'vue$': 'vue/dist/vue.js'
+        },
         extensions: ['', '.js', '.json', '.vue']
     },
     plugins: [

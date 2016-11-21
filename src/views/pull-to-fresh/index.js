@@ -18,16 +18,14 @@ module.exports = {
                     this.$scroll.innerHTML = '没有数据了';
                 }
             }, 3000);
-        }
-    },
-    events: {
+        },
         'pull-to-refresh': function (t) {
             setTimeout(() => {
                 this.$broadcast('pull-to-refresh-close');
                 this.idx = 20;
             }, 1000);
         },
-        'left-nav'(e){
+        leftNav(e){
             this.$router.go('/');
         }
     },

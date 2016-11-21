@@ -1,9 +1,11 @@
-<header-cpt title="Hello vue-app"></header-cpt>
-<section class="m-body">
+<div>
+  <header-cpt title="Hello vue-app"></header-cpt>
+  <section class="m-body">
     <ul class="actions">
-        <li v-for="item in list" @click="goto(item.link)">
-            <span class="title">{{item.title}}</span>
-            <span class="arrow">&gt;</span>
-        </li>
+      <li v-for="item in list" @click="goto(item.link)">
+        <span class="title">{{item.title}}</span>
+        <span class="arrow">&gt;</span>
+      </li>
     </ul>
-</section>
+  </section>
+</div>

@@ -1,0 +1,10 @@
+.dialog-container {
+  height: 200px;
+}
+
+.dialog-container .btn {
+  height: 40px;
+  line-height: 25px;
+  width: 200px;
+  margin-top: 10px;
+}

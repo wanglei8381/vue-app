@@ -3,8 +3,8 @@ require('./style.css');
 
 var list = [
     {
-        title: '(pull up down)下拉刷新和上拉加载',
-        link: '/pullupdown'
+        title: 'dialog(对话框)',
+        link: '/dialog'
     },
     {
         title: 'nav-bar(导航)',
@@ -35,7 +35,8 @@ module.exports = {
     },
     methods: {
         goto: function (link) {
-            this.$router.go(link);
+            console.log(link);
+            this.$router.push(link);
         }
     }
 };

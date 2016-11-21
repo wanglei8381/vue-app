@@ -1,0 +1,76 @@
+.index-bar-container {
+  position fixed
+  z-index 10
+  left 0
+  right 0
+  height 100%
+  width 100%
+
+  .index-bar-head {
+    position: absolute;
+    height: 50px;
+    background: #fff;
+    width: 100%;
+    z-index: 2;
+
+    input {
+      height: 100%;
+      width: 100%;
+      font-size: 18px;
+      padding 5px
+      border: 1px solid #ddd;
+    }
+  }
+
+  .index-bar-main {
+    height 100%
+    padding-top: 50px;
+    .index-bar-content {
+      height 100%
+      overflow-y auto
+      .index-bar-group {
+        padding-left 10px
+        .index-bar-cell {
+          border-bottom 1px solid #ddd
+          padding: 11px 15px;
+          color: #000;
+          &.index-bar-cell-head {
+            padding 3px 0;
+            background-color: #f7f7f7;
+          }
+        }
+      }
+    }
+  }
+}
+
+//index导航条
+.index-bar {
+  padding-top: 50px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  height: 100%;
+  width: 23px;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 10px;
+  background-color: #ddd;
+
+  .index-bar-list {
+    $ufb();
+    $ufb-dir();
+    list-style: none;
+    height: 100%;
+    width: 100%;
+  }
+
+  .index-bar-item {
+    $ufb-flex(1, h);
+    $ufb();
+    $ufb-align(center, column);
+    $ufb-align(center, row);
+  }
+}
+
+
