@@ -1,0 +1,11 @@
+{
+  "files": {
+    "src/app.js": 1
+  },
+  "vendor": [
+    "vue",
+    "axios"
+  ],  
+  "extractCSS": false,
+  "devtool": "source-map"
+}
